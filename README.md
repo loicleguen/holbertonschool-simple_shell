@@ -175,12 +175,15 @@ Run the following command:
 ## ⏯[Demo](#-demo)
 
 ## 👥[Authors](#authors)
+
 <div align="center">
+
 | Author | Role | GitHub | Email |
 |--------|------|--------|-------|
 | **Loïc Le Guen** | Lead Developer | [@loicleguen](https://github.com/loicleguen) | 11510@holbertonstudents.com |
 | **Florian Hadjar** | Co-Developer | [@Boubouche1709](https://github.com/Boubouche1709) | 10482@holbertonstudents.com |
 | **Guillaume Watelet** | Co-Develeper | [@Lagui117](https://github.com/Lagui117) | 10565@holbertonstudents.com |
+
 </div>
 
 ## 📝[License](#license)
