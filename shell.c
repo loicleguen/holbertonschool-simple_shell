@@ -30,11 +30,11 @@ void parse_line(char *line, char *argv[])
 	if (line[strlen(line) - 1] == '\n')
 		line[strlen(line) - 1] = '\0';
 
-	token = strtok(line, " ");
+	token = strtok(line, " :");
 	while (token != NULL && i < MAX_ARGS - 1)
 	{
 		argv[i++] = token;
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " :");
 	}
 	argv[i] = NULL;
 }
@@ -48,6 +48,11 @@ void execute_command(char *argv[])
 	pid_t child_pid;
 	int status;
 
+	if (argv[0] != shell_t)
+	{
+		printf("%s: COMMAND NOT FOUND", argv[0]);
+		return;
+	}
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -64,37 +69,4 @@ void execute_command(char *argv[])
 	{
 		wait(&status);
 	}
-}
-
-/**
- * main - Entry point of the shell
- *
- * Return: Always 0
- */
-int main(void)
-{
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t nread;
-	char *argv[MAX_ARGS];
-
-	while (1)
-	{
-		nread = read_line(&line, &len);
-		if (nread == -1)
-		{
-			printf("\n");
-			break;
-		}
-
-		parse_line(line, argv);
-
-		if (argv[0] == NULL) /* Empty input */
-			continue;
-
-		execute_command(argv);
-	}
-
-	free(line);
-	return (0);
 }
