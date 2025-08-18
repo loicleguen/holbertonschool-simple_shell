@@ -126,7 +126,9 @@ Run the following command:
 ```bash
 ./man man_1__simple_shell.1
 ```
-                                                                        [⬆](#top)
+
+[⬆](#top)
+
 ## 🚀 [Features](#-features)
 
 - **Interactive and non-interactive shell modes**
