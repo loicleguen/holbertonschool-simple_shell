@@ -41,6 +41,7 @@ char **parse_command(char *line)
 	char *token;
 	size_t count = 0;
 	char *delim = " \t\n";
+
 	char *line_copy;
 
 	line_copy = strdup(line);
@@ -49,12 +50,14 @@ char **parse_command(char *line)
 
 	/* First pass: count number of arguments / Compter le nombre d'arguments */
 	token = strtok(line_copy, delim);
+
 	while (token)
 	{
 		count++;
 		token = strtok(NULL, delim);
 	}
 	free(line_copy);
+
 
 	/* Allocate array of pointers / Allouer le tableau de pointeurs */
 	args = malloc(sizeof(char *) * (count + 1));
@@ -111,11 +114,11 @@ child_pid = fork();
 		perror("./shell");
 		free(resolved_path);
 		_exit(127);
+
 		}
 	}
 	else
 	{
-
 		if (waitpid(child_pid, &status, 0) == -1)
 		perror("./shell");
 	}
@@ -160,6 +163,7 @@ char *find_command_in_path(char *command)
 
     free(path_copy);
     return NULL;
+
 }
 
 /**
