@@ -4,7 +4,7 @@
 
 # 🐚 C - Simple Shell Project
 
-[TOP](https://github.com/loicleguen/holbertonschool-printf/blob/main/README.md#top)
+										[TOP](https://github.com/loicleguen/holbertonschool-printf/blob/main/README.md#top)
 
 
 ## 📘 Project Description
@@ -126,9 +126,7 @@ Run the following command:
 ```bash
 ./man man_1__simple_shell.1
 ```
-<p align="right">
-<img src=[⬆](#top)/>
-</p>
+                                                                        [⬆](#top)
 ## 🚀 [Features](#-features)
 
 - **Interactive and non-interactive shell modes**
