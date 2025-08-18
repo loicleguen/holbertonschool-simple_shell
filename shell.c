@@ -15,7 +15,7 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 	/* Show prompt if in interactive mode */
 	/* Afficher le prompt si mode interactif */
 	if (is_interactive)
-		write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
+		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
 
 	/* Read user input / Lire l'entrée utilisateur */
 	chars_read = getline(input, bufsize, stdin);
