@@ -4,7 +4,7 @@
 
 # 🐚 C - Simple Shell Project
 
-[TOP](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+## TOP
 
 
 ## 📘 Project Description
@@ -127,7 +127,7 @@ Run the following command:
 man ./man_1__simple_shell.1
 ```
 
-[⬆](#-top)
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#-top)
 
 ## 🚀 [Features](#-features)
 
