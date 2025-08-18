@@ -103,7 +103,7 @@ Additional allowed system calls and functions:
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
-## 📥[Installation](#installation)
+## 📥[Installation](#-installation)
 
 ### 1. Clone the repository
 
@@ -174,7 +174,7 @@ Run the following command:
 ## 💻[Code Snippet](#-code-snippet)
 ## ⏯[Demo](#-demo)
 
-## 👥[Authors](#authors)
+## 👥[Authors](#-authors)
 
 <div align="center">
 
@@ -186,6 +186,6 @@ Run the following command:
 
 </div>
 
-## 📝[License](#license)
+## 📝[License](#-license)
 
 This project is part of the curriculum at Holberton School and is intended for educational purposes only.
