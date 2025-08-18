@@ -4,7 +4,7 @@
 
 # 🐚 C - Simple Shell Project
 
-[TOP](https://github.com/loicleguen/holbertonschool-printf/blob/main/README.md#top)
+[TOP](https://github.com/loicleguen/holbertonschool-simple_shell/blob/main/README.md#top)
 
 
 ## 📘 Project Description
@@ -124,7 +124,7 @@ We provide a script to execute the custom man page fo our Simple SHell.
 Run the following command:
 
 ```bash
-./man man_1__simple_shell.1
+man ./man_1__simple_shell.1
 ```
 
 [⬆](#top)
