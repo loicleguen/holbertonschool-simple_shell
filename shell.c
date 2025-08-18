@@ -112,7 +112,6 @@ child_pid = fork();
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 		perror("./shell");
-		free(resolved_path);
 		_exit(127);
 
 		}
