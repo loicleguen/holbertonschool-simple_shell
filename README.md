@@ -127,7 +127,7 @@ Run the following command:
 man ./man_1__simple_shell.1
 ```
 
-[⬆](#top)
+[⬆](#-top)
 
 ## 🚀 [Features](#-features)
 
