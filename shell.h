@@ -13,7 +13,14 @@
 /* --- Variables globales --- */
 extern char **environ;
 
-/* --- Structure commande --- */
+/**
+ * struct command_s - Structure that represents a command with arguments
+ *                   - Structure qui représente une commande avec arguments
+ * @line: Raw command line entered by the user
+ *        Ligne brute saisie par l'utilisateur
+ * @args: Array of arguments including command name, NULL-terminated
+ *        Tableau d'arguments incluant le nom de la commande, terminé par NULL
+ */
 typedef struct command_s
 {
 	char *line;   /* La ligne saisie par l'utilisateur */
