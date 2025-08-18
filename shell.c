@@ -125,45 +125,50 @@ child_pid = fork();
 	free(resolved_path);
 return (0);
 }
-
+/**
+ * find_command_in_path - Search for a command in the PATH
+ *                        - Rechercher une commande dans le PATH
+ * @command: Command to find / Commande à rechercher
+ *
+ * Return: Full path to the command or NULL
+ *         Chemin complet vers la commande ou NULL
+ */
 char *find_command_in_path(char *command)
 {
-    char *path_env, *path_copy, *dir;
-    char full_path[1024];
+	char *path_env, *path_copy, *dir;
+	char full_path[1024];
 
     /* Si la commande contient un '/' → chemin absolu ou relatif */
-    if (strchr(command, '/'))
-    {
-        if (access(command, X_OK) == 0)
-            return strdup(command); /* On retourne tel quel */
-        else
-            return NULL; /* Fichier inexécutable ou introuvable */
-    }
+	if (strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+		return (strdup(command)); /* On retourne tel quel */
+		else
+		return (NULL); /* Fichier inexécutable ou introuvable */
+	}
 
     /* Sinon, on cherche dans le PATH */
-    path_env = getenv("PATH");
-    if (!path_env)
-        return NULL;
+path_env = getenv("PATH");
+if (!path_env)
+	return (NULL);
 
-    path_copy = strdup(path_env);
-    if (!path_copy)
-        return NULL;
+path_copy = strdup(path_env);
+	if (!path_copy)
+	return (NULL);
 
-    dir = strtok(path_copy, ":");
-    while (dir)
-    {
-        snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
-        if (access(full_path, X_OK) == 0)
-        {
-            free(path_copy);
-            return strdup(full_path);
-        }
-        dir = strtok(NULL, ":");
-    }
-
-    free(path_copy);
-    return NULL;
-
+dir = strtok(path_copy, ":");
+	while (dir)
+	{
+		snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
+			if (access(full_path, X_OK) == 0)
+			{
+				free(path_copy);
+				return (strdup(full_path));
+			}
+		dir = strtok(NULL, ":");
+	}
+free(path_copy);
+return (NULL);
 }
 
 /**
