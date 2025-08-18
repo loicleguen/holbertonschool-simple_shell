@@ -30,6 +30,12 @@ typedef struct command_s
 ssize_t read_command(char **input, size_t *bufsize, int is_interactive);
 char **parse_command(char *line);
 int execute_command(command_t cmd);
+char *find_command_in_path(char *command);
+char *_strdup(char *str);
+int _strlen(char *s);
+int _strcmp(char *s1, char *s2);
+char *_getenv(const char *name);
+char *_strchr(const char *str, int c);
 int main(void);
 
 #endif /* SHELL_H */

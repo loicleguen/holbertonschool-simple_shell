@@ -15,7 +15,7 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 	/* Show prompt if in interactive mode */
 	/* Afficher le prompt si mode interactif */
 	if (is_interactive)
-		write(STDOUT_FILENO, PROMPT, strlen(PROMPT));
+		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
 
 	/* Read user input / Lire l'entrée utilisateur */
 	chars_read = getline(input, bufsize, stdin);
@@ -23,6 +23,7 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 	/* Handle EOF (Ctrl+D) / Gérer EOF (Ctrl+D) */
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
+	/* Exit command */
 
 	return (chars_read);
 }
@@ -42,13 +43,22 @@ char **parse_command(char *line)
 	size_t count = 0;
 	char *delim = " \t\n";
 
+	char *line_copy;
+
+	line_copy = _strdup(line);
+	if (!line_copy)
+		return (NULL);
+
 	/* First pass: count number of arguments / Compter le nombre d'arguments */
-	token = strtok(line, delim);
+	token = strtok(line_copy, delim);
+
 	while (token)
 	{
 		count++;
 		token = strtok(NULL, delim);
 	}
+	free(line_copy);
+
 
 	/* Allocate array of pointers / Allouer le tableau de pointeurs */
 	args = malloc(sizeof(char *) * (count + 1));
@@ -81,18 +91,26 @@ int execute_command(command_t cmd)
 {
 	pid_t child_pid;
 	int status;
+	char *resolved_path;
+
+	resolved_path = find_command_in_path(cmd.args[0]);
+	if (!resolved_path)
+	{
+		fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
+		return (-1);
+	}
 
 	child_pid = fork();
 	if (child_pid == -1)
 	{
 		perror("./shell");
+		free(resolved_path);
 		return (-1);
 	}
-
 	if (child_pid == 0)
 	{
-		/* Child executes command / L'enfant exécute la commande */
-		if (execve(cmd.args[0], cmd.args, environ) == -1)
+		cmd.args[0] = resolved_path;
+		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 			perror("./shell");
 			_exit(127);
@@ -100,12 +118,57 @@ int execute_command(command_t cmd)
 	}
 	else
 	{
-		/* Parent waits for child / Le parent attend l'enfant */
 		if (waitpid(child_pid, &status, 0) == -1)
 			perror("./shell");
 	}
-
+	free(resolved_path);
 	return (0);
+}
+
+/**
+ * find_command_in_path - Search for a command in the PATH
+ *                        - Rechercher une commande dans le PATH
+ * @command: Command to find / Commande à rechercher
+ *
+ * Return: Full path to the command or NULL
+ *         Chemin complet vers la commande ou NULL
+ */
+char *find_command_in_path(char *command)
+{
+	char *path_env, *path_copy, *dir;
+	char full_path[1024];
+
+    /* Si la commande contient un '/' → chemin absolu ou relatif */
+	if (_strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (_strdup(command)); /* On retourne tel quel */
+		else
+			return (NULL); /* Fichier inexécutable ou introuvable */
+	}
+
+    /* Sinon, on cherche dans le PATH */
+	path_env = _getenv("PATH");
+	if (!path_env)
+		return (NULL);
+
+	path_copy = _strdup(path_env);
+	if (!path_copy)
+		return (NULL);
+
+	dir = strtok(path_copy, ":");
+	while (dir)
+	{
+		sprintf(full_path, "%s/%s", dir, command);
+		if (access(full_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return (_strdup(full_path));
+		}
+		dir = strtok(NULL, ":");
+	}
+	free(path_copy);
+	return (NULL);
 }
 
 /**
@@ -126,7 +189,6 @@ int main(void)
 	/* Check if running in interactive mode */
 	/* Vérifier si on est en mode interactif */
 	is_interactive = isatty(STDIN_FILENO);
-
 	/* Main shell loop / Boucle principale du shell */
 	while (1)
 	{
@@ -148,11 +210,14 @@ int main(void)
 			perror("./shell");
 			continue;
 		}
-		/* Execute command / Exécuter la commande */
-		execute_command(cmd);
+		if (_strcmp(cmd.args[0], "exit") == 0) /* Exit command / Commande exit */
+		{
+			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
+			break; /* Exit the shell / Quitter le shell */
+		}
+		execute_command(cmd); /* Execute command / Exécuter la commande */
 		free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
 	}
-	/* Free memory before exit / Libérer la mémoire avant de quitter */
-	free(input);
+	free(input); /* Free memory before exit */
 	return (0);
 }
