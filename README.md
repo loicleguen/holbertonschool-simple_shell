@@ -4,10 +4,12 @@
 
 # 🐚 C - Simple Shell Project
 
+##### TOP
+
+
 ## 📘 Project Description
 This project is a custom implementation of a UNIX shell, developed as part of a low-level programming curriculum. The shell replicates basic behavior of `/bin/sh`, supporting command execution, environment management, and process control. It is designed to deepen understanding of system calls, process creation, and shell architecture.
 
-### TOP
 
 ## 📑 Table of Contents
 
@@ -103,7 +105,7 @@ Additional allowed system calls and functions:
 gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
 ```
 
-## 📥[Installation](#installation)
+## 📥 [Installation](#-installation)
 
 ### 1. Clone the repository
 
@@ -122,9 +124,10 @@ We provide a script to execute the custom man page fo our Simple SHell.
 Run the following command:
 
 ```bash
-./man man_1__simple_shell.1
+man ./man_1__simple_shell.1
 ```
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
 
 ## 🚀 [Features](#-features)
 
@@ -170,11 +173,15 @@ Run the following command:
 7. **Ensure Betty style compliance**
    Follow the Betty coding style for consistency and readability.
 
-## 📊[Flowchart](#-flowchart)
-## 💻[Code Snippet](#-code-snippet)
-## ⏯[Demo](#-demo)
+## 📊 [Flowchart](#-flowchart)
+## 💻 [Code Snippet](#-code-snippet)
+## ⏯ [Demo](#-demo)
 
-## 👥[Authors](#authors)
+
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+
+
+## 👥 [Authors](#-authors)
 
 <div align="center">
 
@@ -186,6 +193,6 @@ Run the following command:
 
 </div>
 
-## 📝[License](#license)
+## 📝 [License](#-license)
 
 This project is part of the curriculum at Holberton School and is intended for educational purposes only.
