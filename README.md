@@ -10,7 +10,6 @@
 ## 📘 Project Description
 This project is a custom implementation of a UNIX shell, developed as part of a low-level programming curriculum. The shell replicates basic behavior of `/bin/sh`, supporting command execution, environment management, and process control. It is designed to deepen understanding of system calls, process creation, and shell architecture.
 
-### TOP
 
 ## 📑 Table of Contents
 
@@ -127,9 +126,9 @@ Run the following command:
 ```bash
 ./man man_1__simple_shell.1
 ```
-
+<p align="right">
 [⬆](#top)
-
+</p>
 ## 🚀 [Features](#-features)
 
 - **Interactive and non-interactive shell modes**
