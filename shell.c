@@ -23,6 +23,7 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 	/* Handle EOF (Ctrl+D) / Gérer EOF (Ctrl+D) */
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
+	/* Exit command */
 
 	return (chars_read);
 }
@@ -44,9 +45,9 @@ char **parse_command(char *line)
 
 	char *line_copy;
 
-	line_copy = strdup(line);
+	line_copy = _strdup(line);
 	if (!line_copy)
-	return (NULL);
+		return (NULL);
 
 	/* First pass: count number of arguments / Compter le nombre d'arguments */
 	token = strtok(line_copy, delim);
@@ -93,38 +94,37 @@ int execute_command(command_t cmd)
 	char *resolved_path;
 
 	resolved_path = find_command_in_path(cmd.args[0]);
-if (!resolved_path)
+	if (!resolved_path)
 	{
-	fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
-	return (-1);
+		fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
+		return (-1);
 	}
 
-child_pid = fork();
+	child_pid = fork();
 	if (child_pid == -1)
 	{
-	perror("./shell");
-	free(resolved_path);
-	return (-1);
+		perror("./shell");
+		free(resolved_path);
+		return (-1);
 	}
 	if (child_pid == 0)
 	{
 		cmd.args[0] = resolved_path;
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
-		perror("./shell");
-		free(resolved_path);
-		_exit(127);
-
+			perror("./shell");
+			_exit(127);
 		}
 	}
 	else
 	{
 		if (waitpid(child_pid, &status, 0) == -1)
-		perror("./shell");
+			perror("./shell");
 	}
 	free(resolved_path);
-return (0);
+	return (0);
 }
+
 /**
  * find_command_in_path - Search for a command in the PATH
  *                        - Rechercher une commande dans le PATH
@@ -139,36 +139,36 @@ char *find_command_in_path(char *command)
 	char full_path[1024];
 
     /* Si la commande contient un '/' → chemin absolu ou relatif */
-	if (strchr(command, '/'))
+	if (_strchr(command, '/'))
 	{
 		if (access(command, X_OK) == 0)
-		return (strdup(command)); /* On retourne tel quel */
+			return (_strdup(command)); /* On retourne tel quel */
 		else
-		return (NULL); /* Fichier inexécutable ou introuvable */
+			return (NULL); /* Fichier inexécutable ou introuvable */
 	}
 
     /* Sinon, on cherche dans le PATH */
-path_env = getenv("PATH");
-if (!path_env)
-	return (NULL);
+	path_env = _getenv("PATH");
+	if (!path_env)
+		return (NULL);
 
-path_copy = strdup(path_env);
+	path_copy = _strdup(path_env);
 	if (!path_copy)
-	return (NULL);
+		return (NULL);
 
-dir = strtok(path_copy, ":");
+	dir = strtok(path_copy, ":");
 	while (dir)
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
-			if (access(full_path, X_OK) == 0)
-			{
-				free(path_copy);
-				return (strdup(full_path));
-			}
+		sprintf(full_path, "%s/%s", dir, command);
+		if (access(full_path, X_OK) == 0)
+		{
+			free(path_copy);
+			return (_strdup(full_path));
+		}
 		dir = strtok(NULL, ":");
 	}
-free(path_copy);
-return (NULL);
+	free(path_copy);
+	return (NULL);
 }
 
 /**
@@ -189,7 +189,6 @@ int main(void)
 	/* Check if running in interactive mode */
 	/* Vérifier si on est en mode interactif */
 	is_interactive = isatty(STDIN_FILENO);
-
 	/* Main shell loop / Boucle principale du shell */
 	while (1)
 	{
@@ -211,11 +210,14 @@ int main(void)
 			perror("./shell");
 			continue;
 		}
-		/* Execute command / Exécuter la commande */
-		execute_command(cmd);
+		if (_strcmp(cmd.args[0], "exit") == 0) /* Exit command / Commande exit */
+		{
+			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
+			break; /* Exit the shell / Quitter le shell */
+		}
+		execute_command(cmd); /* Execute command / Exécuter la commande */
 		free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
 	}
-	/* Free memory before exit / Libérer la mémoire avant de quitter */
-	free(input);
+	free(input); /* Free memory before exit */
 	return (0);
 }
