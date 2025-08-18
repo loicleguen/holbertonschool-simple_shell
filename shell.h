@@ -32,6 +32,7 @@ char **parse_command(char *line);
 int execute_command(command_t cmd);
 char *find_command_in_path(char *command);
 char *_strdup(char *str);
+int _strlen(char *s);
 int main(void);
 
 #endif /* SHELL_H */
