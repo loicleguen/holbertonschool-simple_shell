@@ -4,7 +4,7 @@
 
 # 🐚 C - Simple Shell Project
 
-										[TOP](https://github.com/loicleguen/holbertonschool-printf/blob/main/README.md#top)
+[TOP](https://github.com/loicleguen/holbertonschool-printf/blob/main/README.md#top)
 
 
 ## 📘 Project Description
