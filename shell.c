@@ -42,13 +42,22 @@ char **parse_command(char *line)
 	size_t count = 0;
 	char *delim = " \t\n";
 
+	char *line_copy;
+
+	line_copy = strdup(line);
+	if (!line_copy)
+	return (NULL);
+
 	/* First pass: count number of arguments / Compter le nombre d'arguments */
-	token = strtok(line, delim);
+	token = strtok(line_copy, delim);
+
 	while (token)
 	{
 		count++;
 		token = strtok(NULL, delim);
 	}
+	free(line_copy);
+
 
 	/* Allocate array of pointers / Allouer le tableau de pointeurs */
 	args = malloc(sizeof(char *) * (count + 1));
@@ -81,31 +90,80 @@ int execute_command(command_t cmd)
 {
 	pid_t child_pid;
 	int status;
+	char *resolved_path;
 
-	child_pid = fork();
-	if (child_pid == -1)
+	resolved_path = find_command_in_path(cmd.args[0]);
+if (!resolved_path)
 	{
-		perror("./shell");
-		return (-1);
+	fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
+	return (-1);
 	}
 
+child_pid = fork();
+	if (child_pid == -1)
+	{
+	perror("./shell");
+	free(resolved_path);
+	return (-1);
+	}
 	if (child_pid == 0)
 	{
-		/* Child executes command / L'enfant exécute la commande */
-		if (execve(cmd.args[0], cmd.args, environ) == -1)
+		cmd.args[0] = resolved_path;
+		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
-			perror("./shell");
-			_exit(127);
+		perror("./shell");
+		free(resolved_path);
+		_exit(127);
+
 		}
 	}
 	else
 	{
-		/* Parent waits for child / Le parent attend l'enfant */
 		if (waitpid(child_pid, &status, 0) == -1)
-			perror("./shell");
+		perror("./shell");
 	}
+	free(resolved_path);
+return (0);
+}
 
-	return (0);
+char *find_command_in_path(char *command)
+{
+    char *path_env, *path_copy, *dir;
+    char full_path[1024];
+
+    /* Si la commande contient un '/' → chemin absolu ou relatif */
+    if (strchr(command, '/'))
+    {
+        if (access(command, X_OK) == 0)
+            return strdup(command); /* On retourne tel quel */
+        else
+            return NULL; /* Fichier inexécutable ou introuvable */
+    }
+
+    /* Sinon, on cherche dans le PATH */
+    path_env = getenv("PATH");
+    if (!path_env)
+        return NULL;
+
+    path_copy = strdup(path_env);
+    if (!path_copy)
+        return NULL;
+
+    dir = strtok(path_copy, ":");
+    while (dir)
+    {
+        snprintf(full_path, sizeof(full_path), "%s/%s", dir, command);
+        if (access(full_path, X_OK) == 0)
+        {
+            free(path_copy);
+            return strdup(full_path);
+        }
+        dir = strtok(NULL, ":");
+    }
+
+    free(path_copy);
+    return NULL;
+
 }
 
 /**
