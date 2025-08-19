@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 /* --- Constante du prompt --- */
-#define PROMPT "#cisfun$ "
+#define PROMPT "#LFG$ "
 /* --- Variables globales --- */
 extern char **environ;
 

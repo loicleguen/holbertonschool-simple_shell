@@ -16,9 +16,10 @@ This project is a custom implementation of a UNIX shell, developed as part of a 
 - [Learning Objectives](#-learning-objectives)
 - [Requirements](#-requirements)
 - [Allowed Functions and System Calls](#-allowed-functions-and-system-calls)
+- [Features](#-features)
 - [Compilation](#️-compilation)
 - [Installation](#-installation)
-- [Features](#-features)
+- [Memory Leak](#-memory-leak)
 - [Recommended Development Process](#-recommended-development-process)
 - [Flowchart](#-flowchart)
 - [Code Snippet](#-code-snippet)
@@ -99,10 +100,31 @@ Additional allowed system calls and functions:
 
 ---
 
+## 🚀 [Features](#-features)
+
+- **Interactive and non-interactive shell modes**
+  The shell supports both real-time user input and piped/scripted command execution.
+
+- **Command parsing and execution**
+  User input is tokenized and interpreted to execute valid commands.
+
+- **Environment variable access**
+  The shell can read and use environment variables such as `PATH`.
+
+- **Built-in commands**
+  - `exit`: Terminates the shell session
+  - `env`: Displays the current environment variables
+
+- **Error handling with custom program name**
+  Errors are displayed with the shell’s executable name (`argv[0]`) for clarity.
+
+- **PATH resolution for external commands**
+  Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
+
 ## ⚙️ [Compilation](#️-compilation)
 
 ```bash
-gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh
+gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o shell
 ```
 
 ## 📥 [Installation](#-installation)
@@ -129,26 +151,25 @@ man ./man_1__simple_shell.1
 
 [⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
 
-## 🚀 [Features](#-features)
+## 🚿 [Memory Leak](#-memory-leak)
 
-- **Interactive and non-interactive shell modes**
-  The shell supports both real-time user input and piped/scripted command execution.
+Check the memory leak with the following command:
 
-- **Command parsing and execution**
-  User input is tokenized and interpreted to execute valid commands.
+```bash
+valgrind --leak-check=full ./shell
+==4192== LEAK SUMMARY:
+==4192==    definitely lost: 0 bytes in 0 blocks
+==4192==    indirectly lost: 0 bytes in 0 blocks
+==4192==      possibly lost: 0 bytes in 0 blocks
+==4192==    still reachable: 1,144 bytes in 2 blocks
+==4192==         suppressed: 0 bytes in 0 blocks
+==4192== Reachable blocks (those to which a pointer was found) are not shown.
+==4192== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==4192==
+==4192== For lists of detected and suppressed errors, rerun with: -s
+==4192== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
 
-- **Environment variable access**
-  The shell can read and use environment variables such as `PATH`.
-
-- **Built-in commands**
-  - `exit`: Terminates the shell session
-  - `env`: Displays the current environment variables
-
-- **Error handling with custom program name**
-  Errors are displayed with the shell’s executable name (`argv[0]`) for clarity.
-
-- **PATH resolution for external commands**
-  Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
 
 ## 🔁 [Recommended Development Process](#-recommended-development-process)
 
@@ -174,6 +195,13 @@ man ./man_1__simple_shell.1
    Follow the Betty coding style for consistency and readability.
 
 ## 📊 [Flowchart](#-flowchart)
+
+<div align="center">
+
+<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Flo/flowchart-simple-shell.drawio_720.png"/>
+
+</div>
+
 ## 💻 [Code Snippet](#-code-snippet)
 ## ⏯ [Demo](#-demo)
 
