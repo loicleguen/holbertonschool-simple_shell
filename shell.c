@@ -217,7 +217,8 @@ int main(void)
 		}
 		if (_strcmp(cmd.args[0], "env") == 0) /* Env command / Commande env */
 		{
-			builtin_env(); /* Print environment variables / Afficher les variables d'environnement */
+			builtin_env(); /* Print env variables / Afficher les variables d'env */
+			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
 			continue; /* Skip execution / Passer à l'itération suivante */
 		}
 		execute_command(cmd); /* Execute command / Exécuter la commande */
