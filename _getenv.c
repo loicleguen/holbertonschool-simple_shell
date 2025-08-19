@@ -13,10 +13,9 @@ char *_getenv(const char *name)
 
 	while (environ[i] != NULL)
 	{
-		/* Check if this entry starts with name and is followed by '=' */
 		if (strncmp(environ[i], name, len) == 0 && environ[i][len] == '=')
 		{
-			return (environ[i] + len + 1); /* skip "NAME=" */
+			return (environ[i] + len + 1);
 		}
 		i++;
 	}
