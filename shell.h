@@ -7,11 +7,13 @@
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
+#include <signal.h>
 
 /* --- Constante du prompt --- */
 #define PROMPT "#LFG$ "
 /* --- Variables globales --- */
 extern char **environ;
+extern char *global_input;
 
 /**
  * struct command_s - Structure that represents a command with arguments
@@ -39,6 +41,7 @@ char *_strchr(const char *str, int c);
 void builtin_env(void);
 void builtin_exit(void);
 void free_args(char **args);
+void sigint_handler(int sig);
 int main(void);
 
 #endif /* SHELL_H */
