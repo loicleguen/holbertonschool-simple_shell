@@ -91,7 +91,6 @@ int execute_command(command_t cmd)
 	}
 	if (child_pid == 0)
 	{
-		cmd.args[0] = resolved_path;
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 			perror("./shell");
@@ -174,9 +173,14 @@ int main(void)
 	int is_interactive;
 	command_t cmd;
 
+	global_input = input;
+
 	is_interactive = isatty(STDIN_FILENO);
+		if (is_interactive)
+			signal(SIGINT, sigint_handler);
 	while (1)
 	{
+		global_input = input;
 		chars_read = read_command(&input, &buffer_size, is_interactive);
 		if (chars_read == -1)
 			break;
@@ -194,6 +198,11 @@ int main(void)
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
 			free_args(cmd.args);
+			if (input)
+				{
+					free(input);
+					input = NULL;
+				}
 			builtin_exit();
 			break;
 		}
@@ -206,6 +215,7 @@ int main(void)
 		execute_command(cmd);
 		free_args(cmd.args);
 	}
-	free(input);
+	if (input)
+		free(input);
 	return (0);
 }
