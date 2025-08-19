@@ -118,7 +118,8 @@ int execute_command(command_t cmd)
 char *find_command_in_path(char *command)
 {
 	char *path_env, *path_copy, *dir;
-	char full_path[1024];
+	char *full_path = NULL;
+	size_t path_len;
 
 	if (_strchr(command, '/'))
 	{
@@ -138,14 +139,22 @@ char *find_command_in_path(char *command)
 	dir = strtok(path_copy, ":");
 	while (dir)
 	{
+		path_len = strlen(dir) + 1 + strlen(command) + 1;
+		full_path = realloc(full_path, path_len);
+		if (!full_path)
+		{
+			free(path_copy);
+			return (NULL);
+		}
 		sprintf(full_path, "%s/%s", dir, command);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (_strdup(full_path));
+			return (full_path);
 		}
 		dir = strtok(NULL, ":");
 	}
+	free(full_path);
 	free(path_copy);
 	return (NULL);
 }
