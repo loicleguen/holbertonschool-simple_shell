@@ -198,7 +198,7 @@ valgrind --leak-check=full ./shell
 
 <div align="center">
 
-<img src="https://app.diagrams.net/?src=about#G1c__iPfw6muYSc075ZTdXAQQgwVo8Ydkg#%7B%22pageId%22%3A%22VIopm2z4ROxCplQAIBuH%22%7D"/>
+<img src="about#G1c__iPfw6muYSc075ZTdXAQQgwVo8Ydkg#%7B%22pageId%22%3A%22VIopm2z4ROxCplQAIBuH%22%7D"/>
 
 </div>
 
