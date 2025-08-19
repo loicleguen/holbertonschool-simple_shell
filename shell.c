@@ -91,7 +91,6 @@ int execute_command(command_t cmd)
 	}
 	if (child_pid == 0)
 	{
-		cmd.args[0] = resolved_path;
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 			perror("./shell");
@@ -118,7 +117,8 @@ int execute_command(command_t cmd)
 char *find_command_in_path(char *command)
 {
 	char *path_env, *path_copy, *dir;
-	char full_path[1024];
+	char *full_path = NULL;
+	size_t path_len;
 
 	if (_strchr(command, '/'))
 	{
@@ -138,14 +138,22 @@ char *find_command_in_path(char *command)
 	dir = strtok(path_copy, ":");
 	while (dir)
 	{
+		path_len = strlen(dir) + 1 + strlen(command) + 1;
+		full_path = realloc(full_path, path_len);
+		if (!full_path)
+		{
+			free(path_copy);
+			return (NULL);
+		}
 		sprintf(full_path, "%s/%s", dir, command);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (_strdup(full_path));
+			return (full_path);
 		}
 		dir = strtok(NULL, ":");
 	}
+	free(full_path);
 	free(path_copy);
 	return (NULL);
 }
@@ -165,9 +173,14 @@ int main(void)
 	int is_interactive;
 	command_t cmd;
 
+	global_input = input;
+
 	is_interactive = isatty(STDIN_FILENO);
+		if (is_interactive)
+			signal(SIGINT, sigint_handler);
 	while (1)
 	{
+		global_input = input;
 		chars_read = read_command(&input, &buffer_size, is_interactive);
 		if (chars_read == -1)
 			break;
@@ -184,18 +197,25 @@ int main(void)
 		}
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
-			free(cmd.args);
+			free_args(cmd.args);
+			if (input)
+				{
+					free(input);
+					input = NULL;
+				}
+			builtin_exit();
 			break;
 		}
 		if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
-			free(cmd.args);
+			free_args(cmd.args);
 			continue;
 		}
 		execute_command(cmd);
-		free(cmd.args);
+		free_args(cmd.args);
 	}
-	free(input);
+	if (input)
+		free(input);
 	return (0);
 }
