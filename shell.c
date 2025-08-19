@@ -193,18 +193,18 @@ int main(void)
 		}
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
-			free(cmd.args);
+			free_args(cmd.args);
 			builtin_exit();
 			break;
 		}
 		if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
-			free(cmd.args);
+			free_args(cmd.args);
 			continue;
 		}
 		execute_command(cmd);
-		free(cmd.args);
+		free_args(cmd.args);
 	}
 	free(input);
 	return (0);
