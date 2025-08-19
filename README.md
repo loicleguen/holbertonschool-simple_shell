@@ -198,7 +198,7 @@ valgrind --leak-check=full ./shell
 
 <div align="center">
 
-<img src="https://files.slack.com/files-tmb/T0423U1MW21-F09AMMJ0YBH-7bea6873a6/flowchart-simple-shell.drawio_720.png"/>
+<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Flo/flowchart-simple-shell.drawio_720.png"/>
 
 </div>
 
