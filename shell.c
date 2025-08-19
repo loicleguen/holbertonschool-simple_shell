@@ -215,6 +215,11 @@ int main(void)
 			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
 			break; /* Exit the shell / Quitter le shell */
 		}
+		if (_strcmp(cmd.args[0], "env") == 0) /* Env command / Commande env */
+		{
+			builtin_env(); /* Print environment variables / Afficher les variables d'environnement */
+			continue; /* Skip execution / Passer à l'itération suivante */
+		}
 		execute_command(cmd); /* Execute command / Exécuter la commande */
 		free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
 	}
