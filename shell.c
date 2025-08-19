@@ -185,6 +185,7 @@ int main(void)
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
 			free(cmd.args);
+			builtin_exit();
 			break;
 		}
 		if (_strcmp(cmd.args[0], "env") == 0)
