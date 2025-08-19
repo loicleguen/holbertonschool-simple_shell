@@ -17,6 +17,6 @@ char *_strchr(const char *str, int c)
 	}
 	return (NULL);
 	if (c == '\0')
-		return ((char *)str); /* Return pointer to the null terminator */
-	return (NULL); /* Character not found */
+		return ((char *)str);
+	return (NULL);
 }

@@ -12,19 +12,11 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 {
 	ssize_t chars_read;
 
-	/* Show prompt if in interactive mode */
-	/* Afficher le prompt si mode interactif */
 	if (is_interactive)
 		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
-
-	/* Read user input / Lire l'entrée utilisateur */
 	chars_read = getline(input, bufsize, stdin);
-
-	/* Handle EOF (Ctrl+D) / Gérer EOF (Ctrl+D) */
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
-	/* Exit command */
-
 	return (chars_read);
 }
 
@@ -42,38 +34,29 @@ char **parse_command(char *line)
 	char *token;
 	size_t count = 0;
 	char *delim = " \t\n";
-
 	char *line_copy;
 
 	line_copy = _strdup(line);
 	if (!line_copy)
 		return (NULL);
-
-	/* First pass: count number of arguments / Compter le nombre d'arguments */
 	token = strtok(line_copy, delim);
-
 	while (token)
 	{
 		count++;
 		token = strtok(NULL, delim);
 	}
 	free(line_copy);
-
-
-	/* Allocate array of pointers / Allouer le tableau de pointeurs */
 	args = malloc(sizeof(char *) * (count + 1));
 	if (!args)
 		return (NULL);
-
-	/* Second pass: store arguments / Stocker les arguments */
 	count = 0;
-	token = strtok(line, delim); /* Reset strtok / Recommencer strtok */
+	token = strtok(line, delim);
 	while (token)
 	{
 		args[count++] = token;
 		token = strtok(NULL, delim);
 	}
-	args[count] = NULL; /* Null-terminated / Terminé par NULL */
+	args[count] = NULL;
 
 	return (args);
 }
@@ -99,7 +82,6 @@ int execute_command(command_t cmd)
 		fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
 		return (-1);
 	}
-
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -138,16 +120,13 @@ char *find_command_in_path(char *command)
 	char *path_env, *path_copy, *dir;
 	char full_path[1024];
 
-    /* Si la commande contient un '/' → chemin absolu ou relatif */
 	if (_strchr(command, '/'))
 	{
 		if (access(command, X_OK) == 0)
-			return (_strdup(command)); /* On retourne tel quel */
+			return (_strdup(command));
 		else
-			return (NULL); /* Fichier inexécutable ou introuvable */
+			return (NULL);
 	}
-
-    /* Sinon, on cherche dans le PATH */
 	path_env = _getenv("PATH");
 	if (!path_env)
 		return (NULL);
@@ -180,50 +159,43 @@ char *find_command_in_path(char *command)
  */
 int main(void)
 {
-	char *input = NULL;     /* Buffer for input / Buffer pour l'entrée */
-	size_t buffer_size = 0; /* Size of buffer / Taille du buffer */
-	ssize_t chars_read;     /* Number of chars read / Nombre de caractères lus */
-	int is_interactive;     /* Interactive flag / Indicateur interactif */
-	command_t cmd;          /* Command structure / Structure commande */
+	char *input = NULL;
+	size_t buffer_size = 0;
+	ssize_t chars_read;
+	int is_interactive;
+	command_t cmd;
 
-	/* Check if running in interactive mode */
-	/* Vérifier si on est en mode interactif */
 	is_interactive = isatty(STDIN_FILENO);
-	/* Main shell loop / Boucle principale du shell */
 	while (1)
 	{
 		chars_read = read_command(&input, &buffer_size, is_interactive);
-		if (chars_read == -1) /* EOF (Ctrl+D) or error / EOF (Ctrl+D) ou erreur */
+		if (chars_read == -1)
 			break;
-		/* Remove trailing newline / Supprimer le retour à la ligne */
 		if (chars_read > 0 && input[chars_read - 1] == '\n')
 			input[chars_read - 1] = '\0';
-		/* Skip empty input / Ignorer entrée vide */
 		if (input[0] == '\0')
 			continue;
-		/* Store command in structure / Stocker commande dans la structure */
 		cmd.line = input;
-		/* Parse command into arguments / Tokeniser la ligne en arguments */
 		cmd.args = parse_command(cmd.line);
 		if (!cmd.args)
 		{
 			perror("./shell");
 			continue;
 		}
-		if (_strcmp(cmd.args[0], "exit") == 0) /* Exit command / Commande exit */
+		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
-			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
-			break; /* Exit the shell / Quitter le shell */
+			free(cmd.args);
+			break;
 		}
-		if (_strcmp(cmd.args[0], "env") == 0) /* Env command / Commande env */
+		if (_strcmp(cmd.args[0], "env") == 0)
 		{
-			builtin_env(); /* Print env variables / Afficher les variables d'env */
-			free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
-			continue; /* Skip execution / Passer à l'itération suivante */
+			builtin_env();
+			free(cmd.args);
+			continue;
 		}
-		execute_command(cmd); /* Execute command / Exécuter la commande */
-		free(cmd.args); /* Free arguments array / Libérer le tableau d'arguments */
+		execute_command(cmd);
+		free(cmd.args);
 	}
-	free(input); /* Free memory before exit */
+	free(input);
 	return (0);
 }
