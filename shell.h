@@ -36,6 +36,7 @@ int _strlen(char *s);
 int _strcmp(char *s1, char *s2);
 char *_getenv(const char *name);
 char *_strchr(const char *str, int c);
+void builtin_env(void);
 int main(void);
 
 #endif /* SHELL_H */
