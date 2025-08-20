@@ -11,15 +11,9 @@
 ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 {
 	ssize_t chars_read;
-	static int initialized;
 
 	is_interactive = isatty(STDIN_FILENO);
 
-	if (!initialized && is_interactive)
-	{
-		signal(SIGINT, sigint_handler);
-		initialized = 1;
-	}
 	if (is_interactive)
 		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
 
@@ -27,6 +21,7 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
+
 	return (chars_read);
 }
 
