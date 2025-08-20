@@ -157,6 +157,11 @@ Check the memory leak with the following command:
 
 ```bash
 valgrind --leak-check=full ./shell
+```
+
+Output:
+
+```bash
 ==4192== LEAK SUMMARY:
 ==4192==    definitely lost: 0 bytes in 0 blocks
 ==4192==    indirectly lost: 0 bytes in 0 blocks
@@ -204,6 +209,8 @@ valgrind --leak-check=full ./shell
 
 ## 💻 [Code Snippet](#-code-snippet)
 ## ⏯ [Demo](#-demo)
+
+https://github.com/user-attachments/assets/49b0a129-14ef-436f-afed-5e70c8d37dc1
 
 
 [⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
