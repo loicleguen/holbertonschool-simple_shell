@@ -56,9 +56,7 @@ By the end of this project, you should be able to explain:
 - All your header files should be include guarded
 - Use system calls only when you need to (why?)
 
-<p align="center">
 [⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
-</p>
 
 ## ✅ [Allowed Functions and System Calls](#-allowed-functions-and-system-calls)
 
@@ -124,6 +122,8 @@ Additional allowed system calls and functions:
 
 - **PATH resolution for external commands**
   Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
+
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
 
 ## ⚙️ [Compilation](#️-compilation)
 
@@ -202,6 +202,8 @@ Output:
 
 7. **Ensure Betty style compliance**
    Follow the Betty coding style for consistency and readability.
+
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
 
 ## 📊 [Flowchart](#-flowchart)
 
