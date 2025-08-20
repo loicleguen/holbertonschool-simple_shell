@@ -214,6 +214,79 @@ Output:
 </div>
 
 ## 💻 [Code Snippet](#-code-snippet)
+
+Read the User Command:
+
+```bash
+ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
+{
+    if (is_interactive)
+        write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
+    return getline(input, bufsize, stdin);
+}
+```
+
+Command Line Tokenisation:
+
+```bash
+char **parse_command(char *line)
+{
+    char *delim = " \t\n";
+    char *token = strtok(line, delim);
+    // ...
+}
+```
+
+Command Execution
+
+```bash
+pid_t child_pid = fork();
+
+if (child_pid == -1)
+{
+    perror("./shell");
+    return (-1);
+}
+
+if (child_pid == 0)
+{
+    execve(resolved_path, cmd.args, environ);
+    perror("./shell"); // If execve fails
+    _exit(127);
+}
+else
+{
+
+    waitpid(child_pid, &status, 0);
+}
+```
+
+PATH Resolution
+
+```bash
+sprintf(full_path, "%s/%s", dir, command);
+if (access(full_path, X_OK) == 0)
+    return _strdup(full_path);
+```
+
+Built-in Command Handling
+
+```bash
+if (_strcmp(cmd.args[0], "exit") == 0)
+{
+    free(cmd.args);
+    free(input);
+    exit(0);
+}
+
+if (_strcmp(cmd.args[0], "env") == 0)
+{
+    builtin_env();
+    free(cmd.args);
+    continue;
+}
+```
+
 ## ⏯ [Demo](#-demo)
 
 https://github.com/user-attachments/assets/49b0a129-14ef-436f-afed-5e70c8d37dc1
