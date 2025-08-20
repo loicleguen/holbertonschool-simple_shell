@@ -157,6 +157,11 @@ Check the memory leak with the following command:
 
 ```bash
 valgrind --leak-check=full ./shell
+```
+
+Output:
+
+```bash
 ==4192== LEAK SUMMARY:
 ==4192==    definitely lost: 0 bytes in 0 blocks
 ==4192==    indirectly lost: 0 bytes in 0 blocks
