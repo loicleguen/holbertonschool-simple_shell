@@ -12,11 +12,16 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 {
 	ssize_t chars_read;
 
+	is_interactive = isatty(STDIN_FILENO);
+
 	if (is_interactive)
 		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
+
 	chars_read = getline(input, bufsize, stdin);
+
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
+
 	return (chars_read);
 }
 
@@ -170,17 +175,11 @@ int main(void)
 	char *input = NULL;
 	size_t buffer_size = 0;
 	ssize_t chars_read;
-	int is_interactive;
 	command_t cmd;
+	int is_interactive = isatty(STDIN_FILENO);
 
-	global_input = input;
-
-	is_interactive = isatty(STDIN_FILENO);
-		if (is_interactive)
-			signal(SIGINT, sigint_handler);
 	while (1)
 	{
-		global_input = input;
 		chars_read = read_command(&input, &buffer_size, is_interactive);
 		if (chars_read == -1)
 			break;
@@ -198,15 +197,10 @@ int main(void)
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
 			free_args(cmd.args);
-			if (input)
-				{
-					free(input);
-					input = NULL;
-				}
+			free(input);
 			builtin_exit();
-			break;
 		}
-		if (_strcmp(cmd.args[0], "env") == 0)
+		else if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
 			free_args(cmd.args);
@@ -215,7 +209,6 @@ int main(void)
 		execute_command(cmd);
 		free_args(cmd.args);
 	}
-	if (input)
-		free(input);
+	free(input);
 	return (0);
 }
