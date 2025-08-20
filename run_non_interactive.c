@@ -16,7 +16,6 @@ void run_non_interactive(void)
 
 		if (global_input[0] == '\0')
 			continue;
-
 		cmd.line = global_input;
 		cmd.args = parse_command(cmd.line);
 		if (!cmd.args)
@@ -24,24 +23,20 @@ void run_non_interactive(void)
 			perror("./shell");
 			continue;
 		}
-
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
 			free_args(cmd.args);
 			break;
 		}
-
 		if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
 			free_args(cmd.args);
 			continue;
 		}
-
 		execute_command(cmd);
 		free_args(cmd.args);
 	}
-
 	free(global_input);
 	global_input = NULL;
 }
