@@ -56,6 +56,8 @@ By the end of this project, you should be able to explain:
 - All your header files should be include guarded
 - Use system calls only when you need to (why?)
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## ✅ [Allowed Functions and System Calls](#-allowed-functions-and-system-calls)
 
 All functions from `string.h` are permitted.
@@ -121,6 +123,8 @@ Additional allowed system calls and functions:
 - **PATH resolution for external commands**
   Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## ⚙️ [Compilation](#️-compilation)
 
 ```bash
@@ -149,7 +153,7 @@ Run the following command:
 man ./man_1__simple_shell.1
 ```
 
-[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
 
 ## 🚿 [Memory Leak](#-memory-leak)
 
@@ -157,17 +161,26 @@ Check the memory leak with the following command:
 
 ```bash
 valgrind --leak-check=full ./shell
-==4192== LEAK SUMMARY:
-==4192==    definitely lost: 0 bytes in 0 blocks
-==4192==    indirectly lost: 0 bytes in 0 blocks
-==4192==      possibly lost: 0 bytes in 0 blocks
-==4192==    still reachable: 1,144 bytes in 2 blocks
-==4192==         suppressed: 0 bytes in 0 blocks
-==4192== Reachable blocks (those to which a pointer was found) are not shown.
-==4192== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==4192==
-==4192== For lists of detected and suppressed errors, rerun with: -s
-==4192== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+Output:
+
+```bash
+==6241== Memcheck, a memory error detector
+==6241== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6241== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==6241== Command: ./shell
+==6241==
+#LFG$ exit
+==6241==
+==6241== HEAP SUMMARY:
+==6241==     in use at exit: 0 bytes in 0 blocks
+==6241==   total heap usage: 4 allocs, 4 frees, 1,165 bytes allocated
+==6241==
+==6241== All heap blocks were freed -- no leaks are possible
+==6241==
+==6241== For lists of detected and suppressed errors, rerun with: -s
+==6241== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
 
@@ -194,19 +207,96 @@ valgrind --leak-check=full ./shell
 7. **Ensure Betty style compliance**
    Follow the Betty coding style for consistency and readability.
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## 📊 [Flowchart](#-flowchart)
 
 <div align="center">
 
-<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/flowchart-simple-shell.drawio_720.png"/>
+<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/Flowchart-simple-shell.drawio%20(1).png"/>
 
 </div>
 
 ## 💻 [Code Snippet](#-code-snippet)
+
+Read the User Command:
+
+```bash
+ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
+{
+    if (is_interactive)
+        write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
+    return getline(input, bufsize, stdin);
+}
+```
+
+Command Line Tokenisation:
+
+```bash
+char **parse_command(char *line)
+{
+    char *delim = " \t\n";
+    char *token = strtok(line, delim);
+    // ...
+}
+```
+
+Command Execution:
+
+```bash
+pid_t child_pid = fork();
+
+if (child_pid == -1)
+{
+    perror("./shell");
+    return (-1);
+}
+
+if (child_pid == 0)
+{
+    execve(resolved_path, cmd.args, environ);
+    perror("./shell"); // If execve fails
+    _exit(127);
+}
+else
+{
+
+    waitpid(child_pid, &status, 0);
+}
+```
+
+PATH Resolution:
+
+```bash
+sprintf(full_path, "%s/%s", dir, command);
+if (access(full_path, X_OK) == 0)
+    return _strdup(full_path);
+```
+
+Built-in Command Handling:
+
+```bash
+if (_strcmp(cmd.args[0], "exit") == 0)
+{
+    free(cmd.args);
+    free(input);
+    exit(0);
+}
+
+if (_strcmp(cmd.args[0], "env") == 0)
+{
+    builtin_env();
+    free(cmd.args);
+    continue;
+}
+```
+
 ## ⏯ [Demo](#-demo)
 
+https://github.com/user-attachments/assets/49b0a129-14ef-436f-afed-5e70c8d37dc1
 
-[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
 
 
 ## 👥 [Authors](#-authors)

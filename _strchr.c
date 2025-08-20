@@ -15,8 +15,9 @@ char *_strchr(const char *str, int c)
 			return ((char *)str);
 		str++;
 	}
-	return (NULL);
+
 	if (c == '\0')
 		return ((char *)str);
+
 	return (NULL);
 }
