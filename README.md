@@ -237,7 +237,7 @@ char **parse_command(char *line)
 }
 ```
 
-Command Execution
+Command Execution:
 
 ```bash
 pid_t child_pid = fork();
@@ -261,7 +261,7 @@ else
 }
 ```
 
-PATH Resolution
+PATH Resolution:
 
 ```bash
 sprintf(full_path, "%s/%s", dir, command);
@@ -269,7 +269,7 @@ if (access(full_path, X_OK) == 0)
     return _strdup(full_path);
 ```
 
-Built-in Command Handling
+Built-in Command Handling:
 
 ```bash
 if (_strcmp(cmd.args[0], "exit") == 0)
