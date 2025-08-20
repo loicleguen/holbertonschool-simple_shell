@@ -209,7 +209,7 @@ Output:
 
 <div align="center">
 
-<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/Flowchart-simple-shell.drawio.png"/>
+<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/Flowchart-simple-shell.drawio%20(1).png"/>
 
 </div>
 
