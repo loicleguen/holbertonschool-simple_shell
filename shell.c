@@ -11,10 +11,20 @@
 ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 {
 	ssize_t chars_read;
+	static int initialized;
 
+	is_interactive = isatty(STDIN_FILENO);
+
+	if (!initialized && is_interactive)
+	{
+		signal(SIGINT, sigint_handler);
+		initialized = 1;
+	}
 	if (is_interactive)
 		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
+
 	chars_read = getline(input, bufsize, stdin);
+
 	if (chars_read == -1 && is_interactive)
 		write(STDOUT_FILENO, "\n", 1);
 	return (chars_read);
@@ -91,7 +101,6 @@ int execute_command(command_t cmd)
 	}
 	if (child_pid == 0)
 	{
-		cmd.args[0] = resolved_path;
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 			perror("./shell");
@@ -118,7 +127,8 @@ int execute_command(command_t cmd)
 char *find_command_in_path(char *command)
 {
 	char *path_env, *path_copy, *dir;
-	char full_path[1024];
+	char *full_path = NULL;
+	size_t path_len;
 
 	if (_strchr(command, '/'))
 	{
@@ -138,14 +148,22 @@ char *find_command_in_path(char *command)
 	dir = strtok(path_copy, ":");
 	while (dir)
 	{
+		path_len = strlen(dir) + 1 + strlen(command) + 1;
+		full_path = realloc(full_path, path_len);
+		if (!full_path)
+		{
+			free(path_copy);
+			return (NULL);
+		}
 		sprintf(full_path, "%s/%s", dir, command);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (_strdup(full_path));
+			return (full_path);
 		}
 		dir = strtok(NULL, ":");
 	}
+	free(full_path);
 	free(path_copy);
 	return (NULL);
 }
@@ -162,10 +180,9 @@ int main(void)
 	char *input = NULL;
 	size_t buffer_size = 0;
 	ssize_t chars_read;
-	int is_interactive;
 	command_t cmd;
+	int is_interactive = isatty(STDIN_FILENO);
 
-	is_interactive = isatty(STDIN_FILENO);
 	while (1)
 	{
 		chars_read = read_command(&input, &buffer_size, is_interactive);
@@ -184,17 +201,18 @@ int main(void)
 		}
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
-			free(cmd.args);
-			break;
+			free_args(cmd.args);
+			free(input);
+			builtin_exit();
 		}
-		if (_strcmp(cmd.args[0], "env") == 0)
+		else if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
-			free(cmd.args);
+			free_args(cmd.args);
 			continue;
 		}
 		execute_command(cmd);
-		free(cmd.args);
+		free_args(cmd.args);
 	}
 	free(input);
 	return (0);
