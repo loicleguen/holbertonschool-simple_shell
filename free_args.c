@@ -1,8 +1,8 @@
 #include "shell.h"
 
 /**
- * free_args - Libère un tableau d'arguments
- * @args: Le tableau d'arguments à libérer
+ * free_args - Frees a NULL-terminated array of strings
+ * @args: The array of strings to free
  */
 void free_args(char **args)
 {
