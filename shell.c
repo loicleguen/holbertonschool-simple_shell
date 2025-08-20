@@ -160,51 +160,19 @@ char *find_command_in_path(char *command)
 
 /**
  * main - Entry point of the simple shell
- *       - Point d'entrée du mini-shell
  *
  * Return: Always 0
- *         Toujours 0
  */
 int main(void)
 {
-	char *input = NULL;
-	size_t buffer_size = 0;
-	ssize_t chars_read;
-	int is_interactive;
-	command_t cmd;
+	int is_interactive = isatty(STDIN_FILENO);
 
-	is_interactive = isatty(STDIN_FILENO);
-	while (1)
-	{
-		chars_read = read_command(&input, &buffer_size, is_interactive);
-		if (chars_read == -1)
-			break;
-		if (chars_read > 0 && input[chars_read - 1] == '\n')
-			input[chars_read - 1] = '\0';
-		if (input[0] == '\0')
-			continue;
-		cmd.line = input;
-		cmd.args = parse_command(cmd.line);
-		if (!cmd.args)
-		{
-			perror("./shell");
-			continue;
-		}
-		if (_strcmp(cmd.args[0], "exit") == 0)
-		{
-			free(cmd.args);
-			free(input);
-			exit(0);
-		}
-		if (_strcmp(cmd.args[0], "env") == 0)
-		{
-			builtin_env();
-			free(cmd.args);
-			continue;
-		}
-		execute_command(cmd);
-		free(cmd.args);
-	}
-	free(input);
+	signal(SIGINT, sigint_handler);
+
+	if (is_interactive)
+		run_interactive();
+	else
+		run_non_interactive();
+
 	return (0);
 }
