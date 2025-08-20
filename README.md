@@ -56,6 +56,10 @@ By the end of this project, you should be able to explain:
 - All your header files should be include guarded
 - Use system calls only when you need to (why?)
 
+<p align="center">
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+</p>
+
 ## ✅ [Allowed Functions and System Calls](#-allowed-functions-and-system-calls)
 
 All functions from `string.h` are permitted.
