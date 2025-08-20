@@ -1,5 +1,7 @@
 #include "shell.h"
 
+char *global_input = NULL;
+
 /**
  * read_command - Read a line from stdin
  * @input: Pointer to buffer that stores user input
