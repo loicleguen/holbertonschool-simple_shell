@@ -56,6 +56,8 @@ By the end of this project, you should be able to explain:
 - All your header files should be include guarded
 - Use system calls only when you need to (why?)
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## ✅ [Allowed Functions and System Calls](#-allowed-functions-and-system-calls)
 
 All functions from `string.h` are permitted.
@@ -121,6 +123,8 @@ Additional allowed system calls and functions:
 - **PATH resolution for external commands**
   Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## ⚙️ [Compilation](#️-compilation)
 
 ```bash
@@ -149,7 +153,7 @@ Run the following command:
 man ./man_1__simple_shell.1
 ```
 
-[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
 
 ## 🚿 [Memory Leak](#-memory-leak)
 
@@ -199,11 +203,13 @@ Output:
 7. **Ensure Betty style compliance**
    Follow the Betty coding style for consistency and readability.
 
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
 ## 📊 [Flowchart](#-flowchart)
 
 <div align="center">
 
-<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/flowchart-simple-shell.drawio_720.png"/>
+<img src="https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/Images/Flowchart-simple-shell.drawio%20(1).png"/>
 
 </div>
 
@@ -213,7 +219,7 @@ Output:
 https://github.com/user-attachments/assets/49b0a129-14ef-436f-afed-5e70c8d37dc1
 
 
-[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/tree/Flo?tab=readme-ov-file#top)
+[⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
 
 
 ## 👥 [Authors](#-authors)
