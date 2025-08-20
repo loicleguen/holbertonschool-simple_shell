@@ -193,7 +193,8 @@ int main(void)
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
 			free(cmd.args);
-			break;
+			free(input);
+			exit(0);
 		}
 		if (_strcmp(cmd.args[0], "env") == 0)
 		{
