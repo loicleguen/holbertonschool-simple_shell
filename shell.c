@@ -12,8 +12,6 @@ ssize_t read_command(char **input, size_t *bufsize, int is_interactive)
 {
 	ssize_t chars_read;
 
-	is_interactive = isatty(STDIN_FILENO);
-
 	if (is_interactive)
 		write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
 
@@ -39,18 +37,22 @@ char **parse_command(char *line)
 	char *token;
 	size_t count = 0;
 	char *delim = " \t\n";
+
 	char *line_copy;
 
 	line_copy = _strdup(line);
 	if (!line_copy)
 		return (NULL);
+
 	token = strtok(line_copy, delim);
+
 	while (token)
 	{
 		count++;
 		token = strtok(NULL, delim);
 	}
 	free(line_copy);
+
 	args = malloc(sizeof(char *) * (count + 1));
 	if (!args)
 		return (NULL);
@@ -87,6 +89,7 @@ int execute_command(command_t cmd)
 		fprintf(stderr, "./shell: %s: command not found\n", cmd.args[0]);
 		return (-1);
 	}
+
 	child_pid = fork();
 	if (child_pid == -1)
 	{
@@ -96,6 +99,7 @@ int execute_command(command_t cmd)
 	}
 	if (child_pid == 0)
 	{
+		cmd.args[0] = resolved_path;
 		if (execve(resolved_path, cmd.args, environ) == -1)
 		{
 			perror("./shell");
@@ -122,8 +126,7 @@ int execute_command(command_t cmd)
 char *find_command_in_path(char *command)
 {
 	char *path_env, *path_copy, *dir;
-	char *full_path = NULL;
-	size_t path_len;
+	char full_path[1024];
 
 	if (_strchr(command, '/'))
 	{
@@ -143,22 +146,14 @@ char *find_command_in_path(char *command)
 	dir = strtok(path_copy, ":");
 	while (dir)
 	{
-		path_len = strlen(dir) + 1 + strlen(command) + 1;
-		full_path = realloc(full_path, path_len);
-		if (!full_path)
-		{
-			free(path_copy);
-			return (NULL);
-		}
 		sprintf(full_path, "%s/%s", dir, command);
 		if (access(full_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (full_path);
+			return (_strdup(full_path));
 		}
 		dir = strtok(NULL, ":");
 	}
-	free(full_path);
 	free(path_copy);
 	return (NULL);
 }
@@ -175,9 +170,10 @@ int main(void)
 	char *input = NULL;
 	size_t buffer_size = 0;
 	ssize_t chars_read;
+	int is_interactive;
 	command_t cmd;
-	int is_interactive = isatty(STDIN_FILENO);
 
+	is_interactive = isatty(STDIN_FILENO);
 	while (1)
 	{
 		chars_read = read_command(&input, &buffer_size, is_interactive);
@@ -196,18 +192,17 @@ int main(void)
 		}
 		if (_strcmp(cmd.args[0], "exit") == 0)
 		{
-			free_args(cmd.args);
-			free(input);
-			builtin_exit();
+			free(cmd.args);
+			break;
 		}
-		else if (_strcmp(cmd.args[0], "env") == 0)
+		if (_strcmp(cmd.args[0], "env") == 0)
 		{
 			builtin_env();
-			free_args(cmd.args);
+			free(cmd.args);
 			continue;
 		}
 		execute_command(cmd);
-		free_args(cmd.args);
+		free(cmd.args);
 	}
 	free(input);
 	return (0);
