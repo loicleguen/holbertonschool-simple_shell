@@ -166,17 +166,21 @@ valgrind --leak-check=full ./shell
 Output:
 
 ```bash
-==4192== LEAK SUMMARY:
-==4192==    definitely lost: 0 bytes in 0 blocks
-==4192==    indirectly lost: 0 bytes in 0 blocks
-==4192==      possibly lost: 0 bytes in 0 blocks
-==4192==    still reachable: 1,144 bytes in 2 blocks
-==4192==         suppressed: 0 bytes in 0 blocks
-==4192== Reachable blocks (those to which a pointer was found) are not shown.
-==4192== To see them, rerun with: --leak-check=full --show-leak-kinds=all
-==4192==
-==4192== For lists of detected and suppressed errors, rerun with: -s
-==4192== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==6241== Memcheck, a memory error detector
+==6241== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6241== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==6241== Command: ./shell
+==6241==
+#LFG$ exit
+==6241==
+==6241== HEAP SUMMARY:
+==6241==     in use at exit: 0 bytes in 0 blocks
+==6241==   total heap usage: 4 allocs, 4 frees, 1,165 bytes allocated
+==6241==
+==6241== All heap blocks were freed -- no leaks are possible
+==6241==
+==6241== For lists of detected and suppressed errors, rerun with: -s
+==6241== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
 
