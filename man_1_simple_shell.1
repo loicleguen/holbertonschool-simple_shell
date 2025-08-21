@@ -18,7 +18,7 @@
 Error reporting:
 Errors are printed to standard error with the program name followed by a short message.
 For example, when a command cannot be found:
-.B ./simple_shell: ls: command not found
+.B ./shell: ls: command not found
 System call failures (e.g., fork/execve/waitpid) are reported with
 .BR perror (3)
 to include the errno description.
@@ -29,7 +29,7 @@ to include the errno description.
               Display the current environment variables.
 
 .SH RETURN VALUE
-       simple_shell returns 0 if all commands were executed successfully.
+       shell returns 0 if all commands were executed successfully.
        A negative value indicate an error. 
 .PP
 On command resolution failure (command not found), the shell prints an error and returns to the prompt.
