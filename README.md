@@ -24,6 +24,7 @@ This project is a custom implementation of a UNIX shell, developed as part of a 
 - [Flowchart](#-flowchart)
 - [Code Snippet](#-code-snippet)
 - [Demo](#-demo)
+- [Return Value](#-return-value)
 - [Authors](#-authors)
 - [License](#-license)
 
@@ -317,6 +318,14 @@ https://github.com/user-attachments/assets/49b0a129-14ef-436f-afed-5e70c8d37dc1
 
 
 [⬆](https://github.com/loicleguen/holbertonschool-simple_shell/blob/Loic/README.md#top)
+
+## 🔙 [Return Value](#-return-value)
+
+The shell returns exit status codes that follow standard UNIX conventions:
+
+- **`0`**: Successful execution of a command or clean shell termination.
+- **`1`**: General error (e.g., invalid command or incorrect arguments).
+- **`127`**: Command not found (typically returned when `execve` fails).
 
 
 ## 👥 [Authors](#-authors)
