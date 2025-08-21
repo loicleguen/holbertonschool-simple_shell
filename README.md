@@ -117,9 +117,6 @@ Additional allowed system calls and functions:
   - `exit`: Terminates the shell session
   - `env`: Displays the current environment variables
 
-- **Error handling with custom program name**
-  Errors are displayed with the shell’s executable name (`argv[0]`) for clarity.
-
 - **PATH resolution for external commands**
   Commands are located using the system’s `PATH` variable, allowing execution of programs without specifying full paths.
 
@@ -289,6 +286,29 @@ if (_strcmp(cmd.args[0], "env") == 0)
     free(cmd.args);
     continue;
 }
+```
+
+Non-Interactive Mode:
+
+```bash
+loicleguen@OrdinateurLLG:~/holbertonschool/holbertonschool-simple_shell$ cat script | ./shell
+AUTHORS  README.md  _strchr.c  _strdup.c  env.c        man_1_simple_shell.1  run_non_interactive.c  shell    shell.h
+Images   _getenv.c  _strcmp.c  _strlen.c  free_args.c  run_interactive.c     script                 shell.c  sigint_handler.c
+/home/loicleguen/holbertonschool/holbertonschool-simple_shell
+#include "shell.h"
+/**
+* builtin_env - prints the current environment variables
+*/
+void builtin_env(void)
+{
+        int i = 0;
+        while (environ[i] != NULL)
+        {
+                printf("%s\n", environ[i]);
+                i++;
+        }
+}
+Salut Kevin
 ```
 
 ## ⏯ [Demo](#-demo)
