@@ -1,56 +1,69 @@
-.TH _SIMPLE_SHELL 1 "22 Aout 2025" "Custom Version" "Programmer's Manual"
-
+.TH SHELL 1 "22 August 2025" "Custom Version" "Programmer's Manual"
 .SH NAME
-       _simple_shell - minimalist command-line interpreter
-
+       shell - minimalist command-line interpreter
 .SH SYNOPSIS
-       #include """shell.h""
-
-       int _simple_shell(const char *format, ...);
-
+       #include "shell.h"
+       
 .SH DESCRIPTION
-.B _SIMPLE_SHELL
-
+.B SHELL
        is a simple command-line interpreter (shell) that executes
        commands either in interactive mode or by reading a command file.
-
        In interactive mode, simple_shell displays a prompt, waits for the user
-       to enter a line, and then executes the specified command.  
+       to enter a line, and then executes the specified command.
        In non-interactive mode, simple_shell reads and executes commands from
        the file given as an argument.
-
        The shell searches for commands in the directories listed in the PATH
        environment variable, then executes them in a new process.
-
+.PP
+Error reporting:
+Errors are printed to standard error with the program name followed by a short message.
+For example, when a command cannot be found:
+.B ./simple_shell: ls: command not found
+System call failures (e.g., fork/execve/waitpid) are reported with
+.BR perror (3)
+to include the errno description.
 .SH BUILT-IN COMMANDS
        exit [n]
               Exit the shell with return code n (default is 0).
-
        env
               Display the current environment variables.
 
-       cd [directory]
-              Change the current working directory (default is $HOME).
-
 .SH RETURN VALUE
        simple_shell returns 0 if all commands were executed successfully.
-       A non-zero value indicates an error:
-
+       A negative value indicate an error. 
+.PP
+On command resolution failure (command not found), the shell prints an error and returns to the prompt.
+If
+.BR execve (2)
+fails in the child process, the child terminates with exit status
+.B 127
+by convention.
+The shell itself exits with 0 when requested via the
+.B exit
+builtin or on EOF in interactive mode.
 .SH EXAMPLES
 .nf
-       Start the shell in interactive mode:
-              $ ./simple_shell
-              ($) ls -l
-              ($) exit
-
-       Execute commands from a script file:
-              $ ./simple_shell script.sh
+Start the shell in interactive mode:
+       $ ./shell
+       #LFG$ ls -l
+       ... output ...
+       #LFG$ env
+       ... environment ...
+       #LFG$ exit
+Non-interactive (reads from stdin):
+       $ echo "/bin/ls" | ./shell
+       ... output ...
+AUTHORS README.md shell.c 
+       $ ./shell
+       #LFG$ ls
+       AUTHORS README.md shell.c
+EOF (Ctrl+D) exits cleanly (interactive):
+       #LFG$ ^D
+       (exit the shell)
 .fi
-
 .SH SEE ALSO
        "sh(1)", "bash(1)", "execve(2)"
-.SH AUTHOR
+.SH AUTHORS
        Function written by Loïc Le Guen, Florian Hadjar and Guillaume Watelet.
-
 .SH COPYRIGHT
        Free to use and modify for educational or personal purposes.
