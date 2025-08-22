@@ -1,16 +1,12 @@
 #ifndef SHELL_H
 #define SHELL_H
-<<<<<<< HEAD
 
-=======
->>>>>>> 81d8ece (Sauvegarde locale de shell.h)
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
- HEAD
 #include <signal.h>
 
 #define PROMPT "#LFG$ "
@@ -47,26 +43,3 @@ char *_strchr(const char *str, int c);
 void free_args(char **args);
 
 #endif /* SHELL_H */
-=======
-/* --- Constante du prompt --- */
-#define PROMPT "#cisfun$ "
-/* --- Variables globales --- */
-extern char **environ;
-/* --- Structure commande --- */
-typedef struct command_s
-{
-    char *line;   /* La ligne saisie par l'utilisateur */
-} command_t;
-ssize_t read_command(char **input, size_t *bufsize, int is_interactive);
-int execute_command(command_t cmd);
-int main(void);
-#endif /* SHELL_H */
-
-
-
-
-
-
-
-
- 81d8ece (Sauvegarde locale de shell.h)
