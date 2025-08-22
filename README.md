@@ -328,7 +328,7 @@ The shell returns exit status codes that follow standard UNIX conventions:
 - **`0`**: Successful execution of a command or clean shell termination.
 - **`1`**: General error (e.g., invalid command or incorrect arguments).
 - **`127`**: Command not found (typically returned when `execve` fails).
-
+- **`- 1`**: General error (when it is different the from the system).
 
 ## 👥 [Authors](#-authors)
 
